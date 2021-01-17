@@ -3,10 +3,6 @@ body {
     background: #333;
 }
 
-path, circle {
-    pointer-events:none;
-}
-
 svg {
     display: block;
     margin: 20px auto;
@@ -17,6 +13,21 @@ svg {
     stroke: white;
     stroke-width: 1;
     stroke-linecap: round;
+    // stroke-linejoin: round;
+
+    path,
+    circle {
+        pointer-events: none;
+        transition: stroke 2s ease-in-out;
+    }
+}
+
+#snail:hover {
+    stroke: orange;
+}
+
+.happy-snail {
+    stroke: #235214;
 }
 
 h1 {
