@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  background: #333;
+}
+
+path, circle {
+  pointer-events: none;
+}
+
+svg {
+  display: block;
+  margin: 20px auto;
+  height: 200px;
+  width: 300px;
+  fill: none;
+  stroke: white;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+h1 {
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */
