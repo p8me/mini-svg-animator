@@ -1,0 +1,8 @@
+
+# Ignore all svgs except optimized ones
+**.svg
+!**opt*.svg
+
+# SCSS
+.sass-cache
+.sass-cache/*
