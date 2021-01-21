@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background: #333;
+  background: #222;
 }
 
 svg {
@@ -12,6 +12,7 @@ svg {
   stroke: white;
   stroke-width: 1;
   stroke-linecap: round;
+  stroke-linejoin: round;
 }
 svg path,
 svg circle {
@@ -20,15 +21,22 @@ svg circle {
 }
 
 #snail:hover {
-  stroke: orange;
+  stroke: #fae84b;
+}
+#snail:hover svg {
+  stroke: #fae84b;
 }
 
 .happy-snail {
-  stroke: #235214;
+  stroke: #4df775;
+}
+.happy-snail svg {
+  stroke: #4df775;
 }
 
 h1 {
   text-align: center;
+  color: white;
 }
 
 /*# sourceMappingURL=style.css.map */

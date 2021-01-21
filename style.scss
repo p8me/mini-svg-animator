@@ -1,7 +1,10 @@
 body {
     margin: 0;
-    background: #333;
+    background: #222;
 }
+
+$happy-snail-color: #4df775;
+$scared-snail-color: #fae84b;
 
 svg {
     display: block;
@@ -13,7 +16,7 @@ svg {
     stroke: white;
     stroke-width: 1;
     stroke-linecap: round;
-    // stroke-linejoin: round;
+    stroke-linejoin: round;
 
     path,
     circle {
@@ -23,13 +26,20 @@ svg {
 }
 
 #snail:hover {
-    stroke: orange;
+    stroke: $scared-snail-color;
+    svg {
+        stroke: $scared-snail-color;
+    }
 }
 
 .happy-snail {
-    stroke: #235214;
+    stroke: $happy-snail-color;
+    svg {
+        stroke: $happy-snail-color;
+    }
 }
 
 h1 {
     text-align: center;
+    color: white;
 }
