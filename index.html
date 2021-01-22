@@ -4,16 +4,20 @@
 <html lang="en">
 
 <head>
-    <title>particle matters</title>
+    <title>Morph-Svg Demo</title>
+    <link rel="icon" href="svg/snail-normal.opt.svg" type="image/svg+xml">
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-
+    <h3>This is demo of Morph-Svg. Visit <a href="https://github.com/p8me/morph-svg">morph-svg on github</a> for the
+        source code.</h3>
     <svg id="snail" viewBox="0 0 48 40" width="48mm" height="48mm"></svg>
     <br>
-    <h1 class="happy">I love snails!</h1>
+    <button class="happy">I love snails!</button>
+    <br><br>
+    <textarea id="logArea" readonly></textarea>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -29,7 +33,14 @@
 
         svgElements = ["shell", "foot", "ltent", "leye", "rtent", "reye"];
 
-        morphSnail = new MorphSvg(document.getElementById('snail'), states, svgFiles, svgElements);
+        let logArea = document.getElementById("logArea");
+        function consLog(msg) {
+            logArea.value += msg + "\n";
+            logArea.scrollTop = logArea.scrollHeight;
+            // console.log(Date.now() - start + ": " + msg);
+        }
+
+        morphSnail = new MorphSvg(document.getElementById('snail'), states, svgFiles, svgElements, undefined, undefined, undefined, consLog);
 
         $(document).ready(function () {
             $(".happy").hover(
