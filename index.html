@@ -42,21 +42,52 @@
 
         morphSnail = new MorphSvg(document.getElementById('snail'), states, svgFiles, svgElements, undefined, undefined, undefined, consLog);
 
+        var shouldFollowMouse = true;
+
         $(document).ready(function () {
             $(".happy").hover(
                 function () {
                     $("#snail").addClass("happy-snail");
                     morphSnail.morph("happy", 1200);
+                    shouldFollowMouse = false;
                 },
                 function () {
                     $("#snail").removeClass("happy-snail");
                     morphSnail.morph("normal", 3000);
+                    shouldFollowMouse = true;
                 });
+            $("#snail").hover(function () { shouldFollowMouse = false; }, function () { shouldFollowMouse = true; });
         });
 
         var snail = document.getElementById("snail");
         snail.onmouseover = () => morphSnail.morph("scared", 1000);
         snail.onmouseout = () => morphSnail.morph("normal", 3000);
+
+        setTimeout(() => {
+            let $lpup = $("#lpup");
+            let $rpup = $("#rpup");
+            let $leye = $("#leye");
+            let $reye = $("#reye");
+
+            function getPupilLocation($eye, event) {
+                let eyeX = $eye.offset().left + $eye.width() / 2;
+                let eyeY = $eye.offset().top + $eye.height() / 2;
+                let dx = event.pageX - eyeX;
+                let dy = event.pageY - eyeY;
+                let norm = Math.sqrt(dx * dx + dy * dy);
+                return { x: dx / norm, y: dy / norm }
+            }
+
+            $("html").mousemove((event) => {
+                if (shouldFollowMouse)
+                    rpupCenter = getPupilLocation($reye, event);
+                else
+                    rpupCenter = { x: 0, y: 0 };
+                rpup.setAttribute("transform", `translate(${rpupCenter.x}, ${rpupCenter.y})`)
+                lpup.setAttribute("transform", `translate(${rpupCenter.x}, ${rpupCenter.y})`)
+            });
+
+        }, 1000);
 
     </script>
 
