@@ -5,14 +5,14 @@
 <path id="foot" d="m40.5 37.5c-4-0.3-8.1-0.5-12.1-0.5-4.1 0-8.1 0.2-12.2 0.5h-10.9"/>
 <path id="ltent" d="m30.3 32.2c0.6-2.2 0.9-4.4 1-6.7 0.1-1.5 0-3-0.1-4.5"/>
 </g>
-<svg id="leye" x="27" y="11.7">
+<g id="leye" transform="translate(27 11.7)">
 <circle id="lball" cx="4" cy="4" r="3" stroke-width=".8"/>
 <circle id="lpup" cx="4" cy="4" r=".7" stroke-width=".4"/>
-</svg>
+</g>
 <path id="rtent" d="m35.7 32.7c0-2.6 0.3-5.2 1.1-7.7 0.4-1.2 0.8-2.4 1.4-3.5" stroke-width=".8"/>
-<svg id="reye" x="36" y="12.5">
+<g id="reye" transform="translate(36,13)">
 <circle id="rball" cx="4" cy="4" r="3" stroke-width=".8"/>
 <circle id="rpup" cx="4" cy="4" r=".7" stroke-width=".4"/>
-</svg>
+</g>
 </g>
 </svg>

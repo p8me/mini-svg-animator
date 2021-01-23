@@ -3,16 +3,16 @@
 <g stroke-width=".8">
 <path id="shell" d="m12.3 28.2c-2.2-0.1-2.95-2.7-2.34-4.4 1.04-2.8 4.44-3.8 6.94-2.6 3.5 1.6 4.5 5.9 2.9 9.1-2.1 4-7.2 5.2-11 3.2-4.54-2.5-5.91-8.4-3.43-12.8 2.85-5.1 9.48-6.6 14.5-3.7 4.8 2.8 6.8 8.9 4.8 14.1"/>
 <path id="foot" d="m40.5 37.5c-4-0.3-8.1-0.5-12.1-0.5-4.1 0-8.1 0.2-12.2 0.5h-10.9"/>
-<path id="ltent" d="m30.2 33.9c0.6-3 0.9-6.1 1.1-9.2 0.1-2.1 0.2-4.1 0.1-6.2"/>
+<path id="ltent" d="m30.3 32.2c0.5-2.5 0.9-5 1-7.5 0.1-2.4 0.1-4.8-0.1-7.2"/>
 </g>
-<svg id="leye" x="27" y="9.5">
+<g id="leye" transform="translate(27,8.44)">
 <circle id="lball" cx="4" cy="4" r="3" stroke-width=".8"/>
 <circle id="lpup" cx="4" cy="4" r=".7" stroke-width=".4"/>
-</svg>
-<path id="rtent" d="m35 34.5c0.5-3.2 1.1-6.4 1.8-9.5 0.5-2 1-4 1.6-6" stroke-width=".8"/>
-<svg id="reye" x="36" y="10">
+</g>
+<path id="rtent" d="m35.7 32.7c0.2-2.6 0.6-5.2 1.1-7.7 0.5-2.4 1.1-4.7 1.8-7" stroke-width=".8"/>
+<g id="reye" transform="translate(36,8.94)">
 <circle id="rball" cx="4" cy="4" r="3" stroke-width=".8"/>
 <circle id="rpup" cx="4" cy="4" r=".7" stroke-width=".4"/>
-</svg>
+</g>
 </g>
 </svg>

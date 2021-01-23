@@ -47,10 +47,10 @@ class MorphSvg {
         this.svgs = []
         for (let i = 0; i < stateNames.length; i++) this.svgs.push([]);
 
-        this.svgDocs = [];
+        // this.svgDocs = []; // for debug only
         for (let stateIdx = 0; stateIdx < stateNames.length; stateIdx++) {
             loadSvg(svgFileNames[stateIdx]).then(svg => {
-                this.svgDocs.push(svg.doc);
+                // this.svgDocs.push(svg.doc);
                 if (stateIdx == 0) { // set the defaul
                     // remove first and last line containing svg tags
                     let group = svg.doc.children[0].children[0];
@@ -73,12 +73,11 @@ class MorphSvg {
                             }
                         }
                     }
-                    else if (type === 'svg') {
+                    else if (type === 'svg' || type === 'g') { // svg buggy on phone
                         getAnim = (dur) => {
                             return {
                                 targets: target,
-                                x: { value: e.getAttribute("x") },
-                                y: { value: e.getAttribute("y") },
+                                transform: e.getAttribute("transform"), // x:, y: buggy on phone
                                 duration: dur,
                                 easing: this.easing
                             }
