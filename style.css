@@ -30,15 +30,13 @@ svg circle {
 #snail:hover {
   stroke: #fae84b;
 }
-#snail:hover svg {
-  stroke: #fae84b;
-}
 
 .happy-snail {
-  stroke: #4df775;
+  stroke: #73ff9d;
 }
-.happy-snail svg {
-  stroke: #4df775;
+
+.sad-snail {
+  stroke: #89deff;
 }
 
 h1 {
@@ -52,13 +50,17 @@ textarea {
   height: 300px;
 }
 
+.buttons {
+  display: table;
+  margin: 0 auto;
+}
+
 button {
   background-color: #555;
-  margin: auto;
-  display: block;
+  margin: 10px;
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 20px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;

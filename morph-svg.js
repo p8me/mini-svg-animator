@@ -30,19 +30,69 @@ class TimeManager {
     }
 }
 
-class MorphSvg {
-    constructor(container, stateNames, svgFileNames, animatedIds, /* svg ids to be animated | see readme for more details */
-        easing = 'easeInOutQuad', durationTimesDeceleration = 100, /* duration * deceleration  = durationTimesDeceleration | see readme for more details */
+class SmoothAnime {
+    constructor(durationTimesDeceleration = 100, /* duration * deceleration  = durationTimesDeceleration | see the readme for more details */
         goNextOnProgress = 10, consLog = () => { }) {
+
+        this.durationTimesDeceleration = durationTimesDeceleration;
+        this.goNextOnProgress = goNextOnProgress;
+        this.timeManager = new TimeManager();
+        this.queueIsFull = false; // or slowDownInProgress
+        this.animes = [];
+        this.queuedAnim = () => { };
+        this.deceleration = 0.02;
+
+        let start = Date.now()
+        this.consLog = (msg) => consLog(Date.now() - start + ": " + msg);
+    }
+
+    morph(anims) {
+        let anim = () => {
+            this.timeManager.reset();
+            this.consLog("running anim");
+            for (let i = 0; i < anims.length; i++) {
+                try { // FIXME
+                    this.animes[i] = anime(anims[i]);
+                } catch { }
+            }
+            this.queueIsFull = false;
+        }
+        if (!this.animes.length || this.animes[0].progress == 100) { anim(); return; }
+        if (this.queueIsFull) {
+            this.queuedAnim = anim;
+            this.consLog("replace queue with new anim");
+        } else {
+            this.consLog("queue anim and start slowdown");
+            this.queuedAnim = anim;
+            this.deceleration = this.durationTimesDeceleration / this.animes[0].duration;
+            requestAnimationFrame(this.loop.bind(this));
+            this.queueIsFull = true;
+        }
+    }
+
+    loop(t) {
+        // this.consLog(this.timeManager.speed);
+        this.timeManager.decelerate(this.deceleration);
+        var slowedTime = this.timeManager.update(t);
+        this.animes.forEach(an => an.tick(slowedTime));
+        if (50 - Math.abs(this.animes[0].progress - 50) > this.goNextOnProgress && this.timeManager.speed > 0)
+            requestAnimationFrame(this.loop.bind(this));
+        else {
+            this.consLog("slowDown finished");
+            this.animes.forEach(an => an.pause());
+            this.queuedAnim();
+        }
+    }
+}
+
+class MorphSvg {
+    constructor(container, stateNames, svgFileNames, animatedIds, /* svg ids to be animated | see the readme for more details */
+        easing = 'easeInOutQuad') {
 
         this.stateNames = stateNames;
         this.animatedIds = animatedIds;
         this.numAnimatedIds = animatedIds.length;
         this.easing = easing;
-        this.durationTimesDeceleration = durationTimesDeceleration;
-        this.goNextOnProgress = goNextOnProgress;
-        let start = Date.now()
-        this.consLog = (msg) => consLog(Date.now() - start + ": " + msg);
 
         this.svgs = []
         for (let i = 0; i < stateNames.length; i++) this.svgs.push([]);
@@ -51,8 +101,7 @@ class MorphSvg {
         for (let stateIdx = 0; stateIdx < stateNames.length; stateIdx++) {
             loadSvg(svgFileNames[stateIdx]).then(svg => {
                 // this.svgDocs.push(svg.doc);
-                if (stateIdx == 0) { // set the defaul
-                    // remove first and last line containing svg tags
+                if (stateIdx == 0) { // set the default
                     let group = svg.doc.children[0].children[0];
                     group.removeAttribute("stroke");
                     container.innerHTML = group.innerHTML;
@@ -98,50 +147,13 @@ class MorphSvg {
                 }
             });
         }
-
-        this.timeManager = new TimeManager();
-        this.queueIsFull = false; // or SlowDownInProgress
-        this.anims = [];
-        this.queuedAnim = () => { };
-        this.deceleration = 0.02;
     }
 
-    morph(stateName, duration) {
+    anims(stateName, duration) {
         let stateIdx = this.stateNames.indexOf(stateName);
-        let anim = () => {
-            this.timeManager.reset();
-            this.consLog(stateName);
-            for (let eIdx = 0; eIdx < this.numAnimatedIds; eIdx++) {
-                try { // FIXME
-                    this.anims[eIdx] = anime(this.svgs[stateIdx][eIdx].anim(duration));
-                } catch { }
-            }
-            this.queueIsFull = false;
-        }
-        if (!this.anims.length || this.anims[0].progress == 100) { anim(); return; }
-        if (this.queueIsFull) {
-            this.queuedAnim = anim;
-            this.consLog("replace queue with " + stateName);
-        } else {
-            this.consLog("queue " + stateName + " and start slowdown");
-            this.queuedAnim = anim;
-            this.deceleration = this.durationTimesDeceleration / duration;
-            requestAnimationFrame(this.loop.bind(this));
-            this.queueIsFull = true;
-        }
-    }
-
-    loop(t) {
-        //this.consLog(this.timeManager.speed);
-        this.timeManager.decelerate(this.deceleration);
-        var slowedTime = this.timeManager.update(t);
-        this.anims.forEach(an => an.tick(slowedTime));
-        if (50 - Math.abs(this.anims[0].progress - 50) > this.goNextOnProgress && this.timeManager.speed > 0)
-            requestAnimationFrame(this.loop.bind(this));
-        else {
-            this.consLog("slowDown finished");
-            this.anims.forEach(an => an.pause());
-            this.queuedAnim();
-        }
+        let anims = [];
+        for (let eIdx = 0; eIdx < this.numAnimatedIds; eIdx++)
+            anims.push(this.svgs[stateIdx][eIdx].anim(duration));
+        return anims;
     }
 }

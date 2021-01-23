@@ -11,8 +11,9 @@ a {
     color: lightblue;
 }
 
-$happy-snail-color: #4df775;
+$happy-snail-color: #73ff9d;
 $scared-snail-color: #fae84b;
+$sad-snail-color: #89deff;
 
 svg {
     display: block;
@@ -32,17 +33,17 @@ svg {
 
 #snail:hover {
     stroke: $scared-snail-color;
-    svg {
-        stroke: $scared-snail-color;
-    }
 }
 
 .happy-snail {
     stroke: $happy-snail-color;
-    svg {
-        stroke: $happy-snail-color;
-    }
 }
+
+.sad-snail {
+    stroke: $sad-snail-color;
+}
+
+
 
 h1 {
     text-align: center;
@@ -55,13 +56,17 @@ textarea {
     height: 300px;
 }
 
+.buttons {
+    display: table;
+    margin: 0 auto;
+}
+
 button {
     background-color: #555;
-    margin: auto;
-    display: block;
+    margin: 10px;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 20px;
     text-align: center;
     text-decoration: none;
     font-size: 16px;

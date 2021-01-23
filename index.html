@@ -11,11 +11,14 @@
 </head>
 
 <body>
-    <h3>This is demo of Morph-Svg. Visit <a href="https://github.com/p8me/morph-svg">morph-svg on github</a> for the
+    <h3>This is a demo of Morph-Svg. Visit <a href="https://github.com/p8me/morph-svg">morph-svg on github</a> for the
         source code.</h3>
     <svg id="snail" viewBox="0 0 48 40" width="48mm" height="48mm"></svg>
     <br>
-    <button class="happy">I love snails!</button>
+    <div class="buttons">
+        <button class="happy">We love snails!</button>
+        <button class="sad">We don't care about snails!</button>
+    </div>
     <br><br>
     <textarea id="logArea" readonly></textarea>
 
@@ -26,7 +29,7 @@
     <script type="text/javascript" src="morph-svg.js"></script>
 
     <script>
-        states = ["normal", "happy", "scared", "upset"];
+        states = ["normal", "happy", "scared", "sad"];
         stateToSvg = (state) => "svg/snail-" + state + ".opt.svg";
         svgFiles = []
         for (s of states) svgFiles.push(stateToSvg(s));
@@ -40,52 +43,84 @@
             // console.log(Date.now() - start + ": " + msg);
         }
 
-        morphSnail = new MorphSvg(document.getElementById('snail'), states, svgFiles, svgElements, undefined, undefined, undefined, consLog);
+        morphSnail = new MorphSvg(document.getElementById('snail'), states, svgFiles, svgElements);
+        smoothSnailAnime = new SmoothAnime(undefined, undefined, consLog);
+        smoothMorphSnail = (state, duration) => { smoothSnailAnime.morph(morphSnail.anims(state, duration)); }
 
         var shouldFollowMouse = true;
+        pupLoc = [0, 0];
 
         $(document).ready(function () {
             $(".happy").hover(
-                function () {
+                () => {
                     $("#snail").addClass("happy-snail");
-                    morphSnail.morph("happy", 1200);
+                    smoothMorphSnail("happy", 1200);
                     shouldFollowMouse = false;
-                },
-                function () {
+                    pupLoc = [0, 0];
+                }, () => {
                     $("#snail").removeClass("happy-snail");
-                    morphSnail.morph("normal", 3000);
+                    smoothMorphSnail("normal", 3000);
                     shouldFollowMouse = true;
                 });
-            $("#snail").hover(function () { shouldFollowMouse = false; }, function () { shouldFollowMouse = true; });
+            $(".sad").hover(
+                () => {
+                    $("#snail").addClass("sad-snail");
+                    smoothMorphSnail("sad", 3000);
+                    shouldFollowMouse = false;
+                    pupLoc = [1, 1];
+                }, () => {
+                    $("#snail").removeClass("sad-snail");
+                    smoothMorphSnail("normal", 3000);
+                    shouldFollowMouse = true;
+                });
         });
 
         var snail = document.getElementById("snail");
-        snail.onmouseover = () => morphSnail.morph("scared", 1000);
-        snail.onmouseout = () => morphSnail.morph("normal", 3000);
+        snail.onmouseover = () => smoothMorphSnail("scared", 1000);
+        snail.onmouseout = () => smoothMorphSnail("normal", 3000);
 
+        // Eyes
+        smoothEyesAnime = new SmoothAnime();
+        // smoothEyesAnime = new SmoothAnime(100, 0, consLog);
         setTimeout(() => {
             let $lpup = $("#lpup");
             let $rpup = $("#rpup");
             let $leye = $("#leye");
             let $reye = $("#reye");
 
-            function getPupilLocation($eye, event) {
+
+            function getPupilLocation($eye, mousePos) {
                 let eyeX = $eye.offset().left + $eye.width() / 2;
                 let eyeY = $eye.offset().top + $eye.height() / 2;
-                let dx = event.pageX - eyeX;
-                let dy = event.pageY - eyeY;
+                let dx = mousePos[0] - eyeX;
+                let dy = mousePos[1] - eyeY;
                 let norm = Math.sqrt(dx * dx + dy * dy);
-                return { x: dx / norm, y: dy / norm }
+                return [dx / norm, dy / norm];
             }
 
+            smoothMorphEyes = (lpup, rpup, loc) => {
+                anim = (pup) => ({
+                    targets: pup,
+                    transform: `translate(${loc[0]}, ${loc[1]})`,
+                    duration: 500,
+                    easing: 'easeInOutQuad'
+                });
+                smoothEyesAnime.morph([anim(lpup), anim(rpup)]);
+            };
+            let mousePos = [0, 0];
             $("html").mousemove((event) => {
-                if (shouldFollowMouse)
-                    rpupCenter = getPupilLocation($reye, event);
-                else
-                    rpupCenter = { x: 0, y: 0 };
-                rpup.setAttribute("transform", `translate(${rpupCenter.x}, ${rpupCenter.y})`)
-                lpup.setAttribute("transform", `translate(${rpupCenter.x}, ${rpupCenter.y})`)
+                mousePos = [event.pageX, event.pageY];
             });
+            let rpupLocLast = [0, 0];
+            setInterval(() => {
+                if (shouldFollowMouse) pupLoc = getPupilLocation($reye, mousePos);
+
+                if (Math.abs(rpupLocLast[0] - pupLoc[0]) + Math.abs(rpupLocLast[1] - pupLoc[1]) > 0.1) {
+                    smoothMorphEyes(lpup, rpup, pupLoc);
+                    rpupLocLast = pupLoc;
+                }
+            }, 500);
+
 
         }, 1000);
 
