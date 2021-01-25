@@ -29,14 +29,15 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script type="text/javascript" src="morph-svg.js"></script>
+    <script type="text/javascript" src="smooth-anim.js"></script>
 
-    <script>
+    <script type="text/javascript">
         states = ["normal", "happy", "scared", "sad"];
         stateToSvg = state => "svg/snail-" + state + ".opt.svg";
         svgFiles = []
         for (s of states) svgFiles.push(stateToSvg(s));
 
-        svgElements = ["shell", "foot", "ltent", "leye", "rtent", "reye"];
+        svgElements = ["shell", "foot", "ltent", "leye", "rtent", "reye", "heart"];
 
         elemById = (id) => document.getElementById(id);
 
@@ -47,14 +48,15 @@
             // console.log(Date.now() - start + ": " + msg);
         }
 
-        morphSnail = new MorphSvg(elemById('snail'), states, svgFiles, svgElements);
+        var snail = elemById("snail");
+        morphSnail = new MorphSvg(snail, states, svgFiles, svgElements);
         smoothSnailAnime = new SmoothAnime(undefined, undefined, consLog);
         smoothMorphSnail = (state, duration) => { smoothSnailAnime.morph(morphSnail.anims(state, duration)); }
+        nonSmoothMorphSnail = (state, duration) => { morphSnail.anims(state, duration).forEach(a => anime(a)); }
 
         var eyesFollowMouse = true;
         pupLoc = [0, 0];
 
-        var snail = elemById("snail");
         snail.onmouseover = () => smoothMorphSnail("scared", 1000);
         snail.onmouseout = () => smoothMorphSnail("normal", 3000);
 

@@ -17,8 +17,6 @@ svg {
   margin: 20px auto;
   height: 200px;
   width: 300px;
-  fill: none;
-  stroke: white;
   stroke-linecap: round;
 }
 svg path,
