@@ -20,11 +20,18 @@
         source code.</h3>
     <svg id="snail" viewBox="0 0 48 40" width="48mm" height="48mm"></svg>
     <br>
-    <div class="buttons">
+    <div class="center">
         <button class="happy">We love snails!</button>
         <button class="sad">We don't care about snails!</button>
+        <button id="btnObvious">Snails are beautiful!</button>
+        <br>
     </div>
     <br><br>
+    <div class="center">
+        <input type="checkbox" id="disable">
+        <label for="disable"> Disable Smooth Transitions</label>
+    </div>
+    <br>
     <textarea id="logArea" readonly></textarea>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
@@ -49,16 +56,23 @@
         }
 
         var snail = elemById("snail");
-        morphSnail = new MorphSvg(snail, states, svgFiles, svgElements);
+
+        morphSnail = new MorphSvg(snail, states, svgFiles, svgElements, undefined, onSvgLoad);
         smoothSnailAnime = new SmoothAnime(undefined, undefined, consLog);
-        smoothMorphSnail = (state, duration) => { smoothSnailAnime.morph(morphSnail.anims(state, duration)); }
-        nonSmoothMorphSnail = (state, duration) => { morphSnail.anims(state, duration).forEach(a => anime(a)); }
+        animatorSnail = (state, duration) => { smoothSnailAnime.morph(morphSnail.anims(state, duration)); }
+        animatorEyes = new SmoothAnime();
+
+        chbDisable = elemById("disable");
+        chbDisable.onclick = () => {
+            smoothSnailAnime.disabled = chbDisable.checked;
+            animatorEyes.disabled = chbDisable.checked;
+        }
 
         var eyesFollowMouse = true;
         pupLoc = [0, 0];
 
-        snail.onmouseover = () => smoothMorphSnail("scared", 1000);
-        snail.onmouseout = () => smoothMorphSnail("normal", 3000);
+        snail.onmouseover = () => animatorSnail("scared", 1000);
+        snail.onmouseout = () => animatorSnail("normal", 3000);
 
         function classOnMouseHover(selector, classAddRemove /*to add on hover and to remove on out*/, onOver, onOut) {
             document.querySelectorAll(selector).forEach(e => {
@@ -75,39 +89,39 @@
         }
 
         classOnMouseHover(".happy", "happy-snail", () => {
-            smoothMorphSnail("happy", 1200);
+            animatorSnail("happy", 1200);
             eyesFollowMouse = false;
             pupLoc = [0, 0];
         }, () => {
-            smoothMorphSnail("normal", 3000);
+            animatorSnail("normal", 3000);
             eyesFollowMouse = true;
         });
 
         classOnMouseHover(".sad", "sad-snail", () => {
-            smoothMorphSnail("sad", 3000);
+            animatorSnail("sad", 3000);
             eyesFollowMouse = false;
             pupLoc = [1, 1];
         }, () => {
-            smoothMorphSnail("normal", 3000);
+            animatorSnail("normal", 3000);
             eyesFollowMouse = true;
         });
 
         // Eyes
-        smoothEyesAnime = new SmoothAnime();
-        // smoothEyesAnime = new SmoothAnime(100, 0, consLog);
-        setTimeout(() => {
+        function onSvgLoad() {
             let lpup = elemById("lpup");
             let rpup = elemById("rpup");
             let pupRef = elemById("reye");
+            let btnObvious = elemById("btnObvious");
 
             smoothMorphEyes = (lpup, rpup, loc) => {
                 anim = pup => ({
                     targets: pup,
-                    transform: `translate(${loc[0]}, ${loc[1]})`,
+                    translateX: loc[0],
+                    translateY: loc[1],
                     duration: 500,
                     easing: 'easeInOutQuad'
                 });
-                smoothEyesAnime.morph([anim(lpup), anim(rpup)]);
+                animatorEyes.morph([anim(lpup), anim(rpup)]);
             };
             let mousePos = [0, 0];
             document.onmousemove = event => {
@@ -129,8 +143,31 @@
                 }
             }, 500);
 
+            rollX = []; rollY = [];
+            nPoints = 25;
+            for (let i = 0; i < nPoints; i++) {
+                phase = (i / nPoints + 0.1) * 2 * Math.PI;
+                rollX.push(Math.sin(phase));
+                rollY.push(Math.cos(phase));
+            }
 
-        }, 1000);
+            rollAnim = pup => ({
+                targets: pup,
+                translateX: rollX,
+                translateY: rollY,
+                duration: 1500,
+                easing: 'easeInOutQuad'
+            });
+
+            btnObvious.onmouseover = () => {
+                if (!eyesFollowMouse) return;
+                eyesFollowMouse = false;
+                animatorEyes.morph([rollAnim(lpup), rollAnim(rpup)]);
+            };
+            btnObvious.onmouseout = () => {
+                eyesFollowMouse = true;
+            }
+        }
 
     </script>
 

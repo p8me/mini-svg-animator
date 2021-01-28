@@ -11,9 +11,9 @@ a {
     color: lightblue;
 }
 
-$happy-snail-color: #73ff9d;
-$scared-snail-color: #fae84b;
-$sad-snail-color: #89deff;
+$happy-snail-color: #cbffda;
+$scared-snail-color: #fffac8;
+$sad-snail-color: #caf0ff;
 
 svg {
     display: block;
@@ -30,18 +30,23 @@ svg {
 }
 
 #snail:hover {
-    stroke: $scared-snail-color;
+    path,
+    circle {
+        stroke: $scared-snail-color;
+    }
 }
-
 .happy-snail {
-    stroke: $happy-snail-color;
+    path,
+    circle {
+        stroke: $happy-snail-color;
+    }
 }
-
 .sad-snail {
-    stroke: $sad-snail-color;
+    path,
+    circle {
+        stroke: $sad-snail-color;
+    }
 }
-
-
 
 h1 {
     text-align: center;
@@ -54,7 +59,7 @@ textarea {
     height: 300px;
 }
 
-.buttons {
+.center {
     display: table;
     margin: 0 auto;
 }
@@ -70,9 +75,9 @@ button {
     font-size: 16px;
     cursor: pointer;
     border-radius: 12px;
-    transition: background-color .5s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
 }
 
 button:hover {
-    background-color:rgb(64, 112, 24);
+    background-color: rgb(64, 112, 24);
 }

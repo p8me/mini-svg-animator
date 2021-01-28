@@ -6,3 +6,6 @@ svg/org
 .sass-cache
 .sass-cache/*
 style.css.map
+
+# local server runner and sass compiler
+run

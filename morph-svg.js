@@ -1,6 +1,6 @@
 class MorphSvg {
     constructor(container, stateNames, svgFileNames, animatedIds, /* svg ids to be animated | see the readme for more details */
-        easing = 'easeInOutQuad') {
+        easing = 'easeInOutQuad', onSvgLoad = () => { }) {
 
         this.stateNames = stateNames;
         this.animatedIds = animatedIds;
@@ -22,6 +22,7 @@ class MorphSvg {
                 let group = svg.children[0];
                 group.removeAttribute("stroke");
                 container.innerHTML = group.innerHTML;
+                onSvgLoad();
             }
 
             for (let eIdx = 0; eIdx < this.numAnimatedIds; eIdx++) {

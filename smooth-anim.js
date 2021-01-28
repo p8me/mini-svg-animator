@@ -9,12 +9,14 @@ class SmoothAnime {
         this.animes = [];
         this.queuedAnim = () => { };
         this.deceleration = 0.02;
+        this.disabled = false;
 
         let start = Date.now()
         this.consLog = (msg) => consLog(Date.now() - start + ": " + msg);
     }
 
     morph(anims) {
+        if (this.disabled) { anims.forEach(a => anime(a)); return; }
         let anim = () => {
             this.timeManager.reset();
             this.consLog("running anim");

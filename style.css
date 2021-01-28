@@ -25,16 +25,19 @@ svg circle {
   transition: stroke 1s ease-in-out;
 }
 
-#snail:hover {
-  stroke: #fae84b;
+#snail:hover path,
+#snail:hover circle {
+  stroke: #fffac8;
 }
 
-.happy-snail {
-  stroke: #73ff9d;
+.happy-snail path,
+.happy-snail circle {
+  stroke: #cbffda;
 }
 
-.sad-snail {
-  stroke: #89deff;
+.sad-snail path,
+.sad-snail circle {
+  stroke: #caf0ff;
 }
 
 h1 {
@@ -48,7 +51,7 @@ textarea {
   height: 300px;
 }
 
-.buttons {
+.center {
   display: table;
   margin: 0 auto;
 }
