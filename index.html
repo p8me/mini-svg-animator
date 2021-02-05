@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 
-<!-- <html lang="en" xmlns="http://www.w3.org/1999/xhtml"> -->
 <html lang="en">
 
 <head>
-    <title>Morph-Svg Demo</title>
+    <title>Mini SVG Animator Demo</title>
     <link rel="icon" href="svg/snail-normal.opt.svg" type="image/svg+xml">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="animejs, morph, svg, batch, animation, smooth, interruption">
-    <meta name="description"
-        content="A vanillajs library for smooth transition of SVG animations and animating batch of svg elements.">
+    <meta name="keywords" content="animejs, morph, svg, batch, animator, animation, smooth, interruption">
+    <meta name="description" content="An SVG animator with smooth transitions.">
     <meta name="author" content="p8me">
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <h3>This is a demo of Morph-Svg. Visit <a href="https://github.com/p8me/morph-svg">morph-svg on github</a> for the
-        source code.</h3>
+    <br><br>
+    <h3 class="center">Mini SVG Animator Demo (<a class="happy" href="https://github.com/p8me/morph-svg">source on github</a>)</h3>
     <svg id="snail" viewBox="0 0 48 40" width="48mm" height="48mm"></svg>
-    <br>
     <div class="center">
         <button class="happy">We love snails!</button>
         <button class="sad">We don't care about snails!</button>
@@ -35,8 +32,8 @@
     <textarea id="logArea" readonly></textarea>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-    <script type="text/javascript" src="morph-svg.js"></script>
-    <script type="text/javascript" src="smooth-anim.js"></script>
+    <script type="text/javascript" src="svg-animator.js"></script>
+    <script type="text/javascript" src="smooth-anime.js"></script>
 
     <script type="text/javascript">
         states = ["normal", "happy", "scared", "sad"];
@@ -57,9 +54,9 @@
 
         var snail = elemById("snail");
 
-        morphSnail = new MorphSvg(snail, states, svgFiles, svgElements, undefined, onSvgLoad);
+        morphSnail = new SvgAnimator(snail, states, svgFiles, svgElements, undefined, onSvgLoad);
         smoothSnailAnime = new SmoothAnime(undefined, undefined, consLog);
-        animatorSnail = (state, duration) => { smoothSnailAnime.morph(morphSnail.anims(state, duration)); }
+        animatorSnail = (state, duration) => { smoothSnailAnime.anime(morphSnail.anims(state, duration)); }
         animatorEyes = new SmoothAnime();
 
         chbDisable = elemById("disable");
@@ -121,7 +118,7 @@
                     duration: 500,
                     easing: 'easeInOutQuad'
                 });
-                animatorEyes.morph([anim(lpup), anim(rpup)]);
+                animatorEyes.anime([anim(lpup), anim(rpup)]);
             };
             let mousePos = [0, 0];
             document.onmousemove = event => {
@@ -162,7 +159,7 @@
             btnObvious.onmouseover = () => {
                 if (!eyesFollowMouse) return;
                 eyesFollowMouse = false;
-                animatorEyes.morph([rollAnim(lpup), rollAnim(rpup)]);
+                animatorEyes.anime([rollAnim(lpup), rollAnim(rpup)]);
             };
             btnObvious.onmouseout = () => {
                 eyesFollowMouse = true;

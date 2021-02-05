@@ -1,4 +1,4 @@
-class MorphSvg {
+class SvgAnimator {
     constructor(container, stateNames, svgFileNames, animatedIds, /* svg ids to be animated | see the readme for more details */
         easing = 'easeInOutQuad', onSvgLoad = () => { }) {
 

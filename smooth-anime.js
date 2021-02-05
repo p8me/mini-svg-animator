@@ -15,7 +15,7 @@ class SmoothAnime {
         this.consLog = (msg) => consLog(Date.now() - start + ": " + msg);
     }
 
-    morph(anims) {
+    anime(anims) {
         if (this.disabled) { anims.forEach(a => anime(a)); return; }
         let anim = () => {
             this.timeManager.reset();
