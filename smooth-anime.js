@@ -1,6 +1,6 @@
 class SmoothAnime {
-    constructor(durationTimesDeceleration = 100, /* duration * deceleration  = durationTimesDeceleration | see the readme for more details */
-        goNextOnProgress = 10, consLog = () => { }) {
+    constructor(durationTimesDeceleration = 1000, /* duration * deceleration  = durationTimesDeceleration | see the readme for more details */
+        goNextOnProgress = 20, consLog = () => { }) {
 
         this.durationTimesDeceleration = durationTimesDeceleration;
         this.goNextOnProgress = goNextOnProgress;
@@ -8,7 +8,7 @@ class SmoothAnime {
         this.queueIsFull = false; // or slowDownInProgress
         this.animes = [];
         this.queuedAnim = () => { };
-        this.deceleration = 0.02;
+        this.deceleration = 0.2;
         this.disabled = false;
 
         let start = Date.now()
@@ -23,7 +23,7 @@ class SmoothAnime {
             for (let i = 0; i < anims.length; i++) {
                 try { // FIXME
                     this.animes[i] = anime(anims[i]);
-                } catch { }
+                } finally { }
             }
             this.queueIsFull = false;
         }
